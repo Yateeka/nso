@@ -1,0 +1,3 @@
+-- Carries over accounts from the original Excel workbook (instance/inventory.xlsx).
+-- Password hashes keep the Werkzeug scrypt format, which the new app verifies natively.
+INSERT INTO "users" ("full_name", "username", "password_hash", "role", "active", "must_change_password", "created_at", "last_login") VALUES ('sofe', 'sofe', 'scrypt:32768:8:1$1WPwhxXNSslD1Skv$2c538e5b7fd328c301e2d6360f0841446fc19f95ef19a0fd17110de4097200d8e5d08b27d531a2948b3b5b2475b0e7100d1cba1a60a3f7a3a4a94c1e00e89ef3', 'Admin', true, false, '2026-09-29T20:03:12+00:00', '2026-09-29T20:06:20+00:00') ON CONFLICT ("username") DO NOTHING;
