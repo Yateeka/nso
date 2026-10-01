@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Digital Inventory{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">OVERVIEW</p><h1>Inventory dashboard</h1><p class="muted">A quick look at your current stock.</p></div><a class="button primary" href="{{ url_for('main.scan') }}">Scan barcode</a></div>
+<section class="stats-grid">
+  <article class="stat"><span>Products</span><strong>{{ products|length }}</strong></article>
+  <article class="stat"><span>Total units</span><strong>{{ total_units }}</strong></article>
+  <article class="stat"><span>Low stock</span><strong>{{ low_count }}</strong></article><article class="stat"><span>Out of stock</span><strong>{{ out_count }}</strong></article>
+</section>
+<section class="quick-actions"><a class="button primary" href="{{ url_for('main.scan') }}">▦ Scan Item</a>{% if current_user.role == 'Admin' %}<a class="button secondary" href="{{ url_for('main.new_product') }}">＋ Register Product</a>{% else %}<a class="button secondary" href="{{ url_for('main.scan') }}">＋ Add Inventory</a>{% endif %}<a class="button secondary" href="{{ url_for('main.inventory') }}">View Inventory</a><a class="button secondary" href="{{ url_for('main.transactions') }}">Transaction History</a></section>
+<section class="panel"><div class="panel-heading"><h2>Stock alerts</h2><a href="{{ url_for('main.inventory') }}">Review inventory →</a></div>{% if low_count %}<div class="alert alert-info">{{ low_count }} product(s) are at or below their minimum quantity, including {{ out_count }} out of stock.</div>{% else %}<p class="muted">All products are above their minimum quantity.</p>{% endif %}</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Recent activity</h2><a href="{{ url_for('main.inventory') }}">View inventory →</a></div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>User</th><th>Product</th><th>Action</th><th>Amount</th><th>Balance</th></tr></thead><tbody>
+  {% for row in transactions %}<tr><td>{{ (row['Timestamp'] or row['Date'])|replace('T', ' ') }}</td><td>{{ row['User'] }}</td><td>{{ row['Product Name'] or row['Product ID'] }}</td><td><span class="badge badge-{{ row['Action']|lower }}">{{ row['Action'] }}</span></td><td>{{ row['Quantity Changed'] or row['Amount'] }}</td><td>{{ row['New Quantity'] or row['Updated Quantity'] }}</td></tr>{% else %}<tr><td colspan="6" class="empty">No transactions yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+<section class="panel"><div class="panel-heading"><h2>Recently added</h2><a href="{{ url_for('main.inventory') }}">Browse all products →</a></div><div class="recent-product-grid">{% for product in recent_products %}<a class="recent-product" href="{{ url_for('main.product_detail', barcode=product.barcode) }}"><span>{{ product.category }}</span><strong>{{ product.name }}</strong><small>{{ product.product_id }} · {{ product.quantity }} in stock</small></a>{% else %}<p class="muted">New products will appear here.</p>{% endfor %}</div></section>
+{% endblock %}

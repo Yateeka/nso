@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Scan Item · Digital Inventory{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">BARCODE LOOKUP</p><h1>Scan or enter a barcode</h1><p class="muted">USB scanners can type directly into the field below.</p></div></div>
+<div class="scan-layout">
+  <section class="panel scan-panel" data-can-register="{{ 'true' if current_user.role == 'Admin' else 'false' }}">
+    <form id="barcode-form" class="scan-form">
+      <label for="barcode-input">Barcode</label>
+      <div class="input-action"><input id="barcode-input" autocomplete="off" inputmode="numeric" maxlength="128" placeholder="Scan or type barcode" required autofocus><button class="button primary" type="submit">Look up</button></div>
+      <p class="form-note">Most USB scanners send Enter automatically.</p>
+    </form>
+    <div id="scan-message" class="inline-message" aria-live="polite"></div>
+    <div id="product-result"></div>
+  </section>
+  <section class="panel camera-panel">
+    <div class="panel-heading"><h2>Camera scanner</h2><span class="badge">HTTPS required</span></div>
+    <div class="camera-frame"><video id="camera-preview" playsinline muted></video><div class="camera-guide"></div></div>
+    <div class="button-row"><button id="start-camera" class="button secondary" type="button">Start camera</button><button id="stop-camera" class="button ghost" type="button" disabled>Stop</button></div>
+    <p id="camera-status" class="form-note">Uses your browser’s built-in barcode detector when available.</p>
+  </section>
+</div>
+{% endblock %}

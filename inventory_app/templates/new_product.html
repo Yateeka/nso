@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}New product · Digital Inventory{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">NEW RECORD</p><h1>Add a product</h1><p class="muted">A product ID will be assigned automatically.</p></div></div>
+<section class="panel form-panel"><form method="post" class="form-grid">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Product name<input name="name" required maxlength="120" value="{{ request.form.get('name', '') }}"></label>
+  <label>Barcode<input name="barcode" required maxlength="128" value="{{ request.form.get('barcode', barcode) }}"></label>
+  <label>Category<input name="category" required maxlength="80" value="{{ request.form.get('category', '') }}"></label>
+  <label>Starting quantity<input type="number" name="quantity" required min="0" step="1" value="{{ request.form.get('quantity', 0) }}"></label>
+  <label>Minimum quantity<input type="number" name="minimum_quantity" required min="0" step="1" value="{{ request.form.get('minimum_quantity', 5) }}"></label>
+  <label class="full">Description<textarea name="description" maxlength="500" rows="3">{{ request.form.get('description', '') }}</textarea></label>
+  <label class="full">Location<input name="location" required maxlength="80" value="{{ request.form.get('location', '') }}"></label>
+  <div class="full button-row"><button class="button primary" type="submit">Create product</button><a class="button ghost" href="{{ url_for('main.scan') }}">Cancel</a></div>
+</form></section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} · Digital Inventory{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">{{ product.product_id }}</p><h1>{{ product.name }}</h1><p class="muted">Barcode {{ product.barcode }}</p></div><div class="button-row"><a class="button secondary" href="{{ url_for('main.scan') }}">Scan another</a>{% if current_user.role == 'Admin' %}<a class="button secondary" href="{{ url_for('main.edit_product', barcode=product.barcode) }}">Edit product</a>{% endif %}</div></div>
+<div class="detail-grid">
+  <section class="panel product-card">
+    <dl><div><dt>Category</dt><dd>{{ product.category }}</dd></div><div><dt>Description</dt><dd>{{ product.description or '—' }}</dd></div><div><dt>Minimum quantity</dt><dd>{{ product.minimum_quantity }}</dd></div><div><dt>Location</dt><dd>{{ product.location }}</dd></div><div><dt>Last updated</dt><dd>{{ product.updated_at|replace('T', ' ') }}</dd></div></dl>
+  </section>
+  <section class="panel quantity-card" data-barcode="{{ product.barcode }}"><span>Current quantity</span><strong id="quantity-value">{{ product.quantity }}</strong>
+    <form id="quantity-form"><div class="segmented"><label><input type="radio" name="action" value="ADD" checked><span>Add</span></label><label><input type="radio" name="action" value="REMOVE"><span>Remove</span></label></div><label>Amount<input id="quantity-amount" type="number" min="1" step="1" value="1" required></label><button class="button primary" type="submit">Update quantity</button></form>
+    <div id="quantity-message" class="inline-message" aria-live="polite"></div><dialog id="quantity-confirm" class="confirm-dialog"><h2>Confirm inventory change</h2><p id="quantity-confirm-copy"></p><div class="button-row"><button type="button" id="quantity-cancel" class="button ghost">Cancel</button><button type="button" id="quantity-confirm-button" class="button primary">Confirm</button></div></dialog>
+  </section>
+</div>
+{% endblock %}

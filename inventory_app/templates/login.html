@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Digital Inventory System{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <div class="auth-mark" aria-hidden="true">▤</div>
+  <p class="eyebrow">GEORGIA STATE UNIVERSITY</p>
+  <h1>Digital Inventory System</h1>
+  <p class="department">Student Orientation &amp; Family Engagement</p>
+  <p class="muted">Sign in with your department account.</p>
+  <form method="post" class="stack-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label>Username<input name="username" autocomplete="username" required maxlength="40" autofocus></label>
+    <label>Password<div class="password-field"><input id="login-password" type="password" name="password" autocomplete="current-password" required><button type="button" class="password-toggle" aria-label="Show password" aria-pressed="false">◉</button></div></label>
+    <label class="remember-option"><input type="checkbox" name="remember" value="1"> Remember Me</label>
+    <button class="button primary" type="submit">Sign In</button>
+  </form>
+  <p class="auth-help"><a href="{{ url_for('main.forgot_password') }}">Forgot your password?</a></p>
+  <p class="form-note">Accounts are created by an administrator.</p>
+</section>
+{% endblock %}
